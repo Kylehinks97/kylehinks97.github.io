@@ -21,13 +21,13 @@ function openEmailWindow() {
           }}
         >
           <h3 style={{ margin: 0 }} className="footer-text">
-            Suite 58 Beacon Buildings
+            Office 9, Euro House
             <br />
-            Leighswood Road
+            Birch Lane Business Park
             <br />
-            Aldridge
+            Birch Lane
             <br />
-            WS9 8AA
+            WS9 0NF
           </h3>
           <h3 style={{ margin: 0 }}  className="footer-text">
             <a
