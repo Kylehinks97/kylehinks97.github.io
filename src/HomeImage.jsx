@@ -36,7 +36,7 @@ export default function HomeImage() {
       </Link>
       <div style={{ position: "relative", width: "100%" }}>
         <img
-          src="/images/Home Image.png"
+          src="/images/Ultra-compressed%20Home%20Image_converted.avif"
           width="100%"
           alt="Elderly lady enjoying the company of her female carer"
           id="background-img"
@@ -105,7 +105,6 @@ export default function HomeImage() {
               border: "none",
               background: "#FF6B3D",
               boxShadow: "1px 1px 6px black",
-              zIndex: 2,
               width: "fit-content",
             }}
             id="inquiry-button"
