@@ -1,59 +1,38 @@
-import Footer from "./Footer.jsx";
-import FinalFooter from "./FinalFooter.jsx";
-import HomeCarousel from "./HomeCarousel.jsx";
+import ReviewCarousel from "./components/ReviewCarousel";
+import { reviewLinks } from "./siteData";
 
 export default function Testimonials() {
   return (
-    <>
-      <div
-        style={{
-          marginBottom: "5em",
-        }}
-      >
-        <h1
-          className="d-flex justify-content-center"
-          style={{
-            marginTop: "1em",
-            userSelect: "none",
-            marginBottom: "0.75em",
-          }}
-        >
-          Testimonials
-        </h1>
-        <HomeCarousel />
-        <div
-          style={{
-            margin: "auto",
-            marginTop: "2em",
-          }}
-          id="text-container"
-        >
+    <div className="shell section">
+      <div className="section-copy section-copy--center">
+        <span className="section-eyebrow">Testimonials</span>
+        <h1>Feedback from customers and staff</h1>
+        <p>
+          Libra Care is proud of the reviews shared by customers, families, and
+          staff across independent platforms.
+        </p>
+      </div>
+
+      <div className="split-section">
+        <ReviewCarousel />
+        <div className="content-card">
+          <h2>Read more</h2>
           <p>
-            Libra Care is the proud owners of many reviews from customers and
-            staff alike.
+            Staff reviews are available on{" "}
+            <a href={reviewLinks.staff} target="_blank" rel="noreferrer">
+              Indeed
+            </a>
+            .
           </p>
           <p>
-            You can read staff reviews on{" "}
-            <a
-              href="https://uk.indeed.com/cmp/Libra-Care-Ltd/reviews"
-              target="_blank"
-            >
-              Indeed Reviews
+            Customer reviews are available on{" "}
+            <a href={reviewLinks.customers} target="_blank" rel="noreferrer">
+              Best Care Compare
             </a>
-          </p>
-          <p>
-            And customer reviews on{" "}
-            <a
-              target="_blank"
-              href="https://www.bestcarecompare.com/homecare/info/detail.aspx?x1=6117919"
-            >
-              BestCompare.com
-            </a>
+            .
           </p>
         </div>
       </div>
-      <Footer />
-      <FinalFooter />
-    </>
+    </div>
   );
 }

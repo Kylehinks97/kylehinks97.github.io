@@ -1,34 +1,50 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import NavigationBar from "./NavigationBar";
-import Home from "./Home.jsx";
-import Values from "./Values.jsx";
-import DataProtection from "./DataProtection.jsx";
-import Inquiry from "./Inquiry";
-import Services from "./Services";
-import OurTeam from "./OurTeam";
-import ContactUs from "./ContactUs";
-import Testimonials from "./Testimonials";
-import PrivacyPolicy from "./PrivacyPolicy.jsx";
-import Blog from "./Blog.jsx";
+import SiteHeader from "./components/SiteHeader";
+import SiteFooter from "./components/SiteFooter";
+
+const Home = lazy(() => import("./Home"));
+const Values = lazy(() => import("./Values"));
+const DataProtection = lazy(() => import("./DataProtection"));
+const Inquiry = lazy(() => import("./Inquiry"));
+const Services = lazy(() => import("./Services"));
+const OurTeam = lazy(() => import("./OurTeam"));
+const ContactUs = lazy(() => import("./ContactUs"));
+const Testimonials = lazy(() => import("./Testimonials"));
+const PrivacyPolicy = lazy(() => import("./PrivacyPolicy"));
+const Blog = lazy(() => import("./Blog"));
 
 function App() {
   return (
     <BrowserRouter>
-      <NavigationBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="values" element={<Values />} />
-        <Route path="/data-protection" element={<DataProtection />} />
-        <Route path="/inquiry" element={<Inquiry />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/our-team" element={<OurTeam />} />
-        <Route path="/contact-us" element={<ContactUs />} />
-        <Route path="/testimonials" element={<Testimonials />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/blog" element={<Blog />} />
-      </Routes>
+      <div className="site-shell">
+        <SiteHeader />
+        <main className="site-main">
+          <Suspense
+            fallback={
+              <div className="shell section">
+                <div className="content-card">Loading...</div>
+              </div>
+            }
+          >
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/values" element={<Values />} />
+              <Route path="/data-protection" element={<DataProtection />} />
+              <Route path="/inquiry" element={<Inquiry />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/our-team" element={<OurTeam />} />
+              <Route path="/contact-us" element={<ContactUs />} />
+              <Route path="/testimonials" element={<Testimonials />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/blog" element={<Blog />} />
+            </Routes>
+          </Suspense>
+        </main>
+        <SiteFooter />
+      </div>
     </BrowserRouter>
   );
 }

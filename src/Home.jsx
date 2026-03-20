@@ -1,139 +1,77 @@
-import HomeCarousel from "./HomeCarousel";
-import HomeImage from "./HomeImage";
-import { MapContainer, TileLayer, Polygon, Marker } from "react-leaflet";
-import {} from "leaflet";
-import "./styles/Map.css";
-import "leaflet/dist/leaflet.css";
-import FormComponent from "./FormComponent";
-import Footer from "./Footer";
-import * as turf from "@turf/turf";
-import LogoCarousel from "./LogoCarousel";
-import "./styles/Home.css"
-import LogoBoard from "./LogoBoard.jsx";
-import FinalFooter from "./FinalFooter.jsx"
+import HeroBanner from "./components/HeroBanner";
+import InquiryForm from "./components/InquiryForm";
+import LogoGrid from "./components/LogoGrid";
+import ReviewCarousel from "./components/ReviewCarousel";
+import ServiceAreaMap from "./components/ServiceAreaMap";
+import { reviewLinks, serviceHighlights } from "./siteData";
 
 export default function Home() {
-  const transparentIcon = new L.Icon({
-    iconUrl: "../assets/",
-    iconSize: [0, 0],
-  });
-
-  const markerCoords = [
-    [52.608787, -1.993917],
-    [52.603735, -1.942715],
-    [52.602003, -1.943823],
-    [52.612602, -1.994888],
-    [52.613196, -1.942931],
-    [52.648283, -1.989843],
-    [52.586713, -1.986419],
-    [52.619668, -1.981383],
-    [52.615297, -1.932066],
-    [52.620103, -1.985038],
-    [52.616938, -1.935317],
-    [52.60816, -1.978749],
-    [52.61535, -1.939768],
-    [52.613055, -1.998774],
-    [52.58605, -1.880128],
-    [52.593694, -1.961498],
-    [52.60722, -1.970668],
-    [52.64731, -1.983913],
-    [52.579606, -1.916812],
-    [52.623455, -1.994055],
-    [52.612056, -1.999197],
-    [52.609717, -1.945763],
-    [52.594888, -1.945799],
-    [52.593623, -1.853371],
-    [52.602558, -1.9732],
-    [52.611402, -1.987069],
-    [52.604258, -1.942875],
-    [52.614822, -1.932869],
-    [52.603568, -1.94387],
-    [52.605889, -1.943026],
-    [52.604614, -1.942914],
-    [52.603677, -1.944529],
-    [52.587389, -1.87674],
-    [52.601997, -1.941354],
-    [52.614727, -1.939224],
-    [52.595787, -1.941609],
-    [52.6154, -1.8845],
-    [52.674827, -2.029781],
-  ];
-  const bufferedPolygon = turf.buffer(turf.multiPoint(markerCoords), 3.4, {
-    units: "kilometers",
-  });
-  const polygonCoords = bufferedPolygon.geometry.coordinates[0];
-
   return (
     <>
-      <HomeImage />
-      <HomeCarousel />
-      <div
-        style={{
-          backgroundColor: "#FF6B3D",
-          height: "500px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          clipPath: "polygon(0 5%, 100% 0, 100% 95%, 0 100%)",
-          marginBottom: "20px",
-        }}
-      >
-        <h3
-          style={{
-            color: "white",
-            textAlign: "center",
-            marginTop: 0,
-            marginBottom: 10,
-            textShadow: "2px 2px 4px black",
-            padding: "10px",
-          }}
-        >
-          Where we deliver care...
-        </h3>
-        <MapContainer
-          style={{
-            borderRadius: "1.5em",
-          }}
-          zoom={10}
-          center={[52.605738, -1.957181]}
-          scrollWheelZoom={false}
-        >
-          <Polygon positions={polygonCoords} color="#006400" />
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          {markerCoords.map((coord, idx) => {
-            return (
-              <Marker
-                position={coord}
-                id={idx}
-                key={idx}
-                icon={transparentIcon}
-              ></Marker>
-            );
-          })}
-        </MapContainer>
-      </div>
-      <div
-        style={{
-          marginBottom: "5%",
-          height: "auto",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <FormComponent></FormComponent>
-      </div>
-      <div className="logo-carousel-container">
-        <LogoCarousel />
-      </div>
-      <div className="logo-board-container">
-        <LogoBoard />
-      </div>
-      <Footer />
-      <FinalFooter />
+      <HeroBanner />
+
+      <section className="shell section">
+        <div className="section-copy section-copy--center">
+          <span className="section-eyebrow">Why families choose us</span>
+          <h2>Support that feels personal, practical, and dependable.</h2>
+        </div>
+        <div className="feature-grid">
+          {serviceHighlights.map((highlight) => (
+            <article key={highlight.title} className="feature-card">
+              <h3>{highlight.title}</h3>
+              <p>{highlight.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section section--muted">
+        <div className="shell split-section">
+          <div className="section-copy">
+            <span className="section-eyebrow">Testimonials</span>
+            <h2>What people say about Libra Care</h2>
+            <p>
+              We are proud of the feedback shared by customers and staff across
+              trusted review platforms.
+            </p>
+            <div className="inline-actions">
+              <a
+                href={reviewLinks.customers}
+                target="_blank"
+                rel="noreferrer"
+                className="button button--secondary"
+              >
+                Customer reviews
+              </a>
+              <a
+                href={reviewLinks.staff}
+                target="_blank"
+                rel="noreferrer"
+                className="button button--ghost"
+              >
+                Staff reviews
+              </a>
+            </div>
+          </div>
+          <ReviewCarousel />
+        </div>
+      </section>
+
+      <section className="shell section">
+        <ServiceAreaMap />
+      </section>
+
+      <section className="shell section">
+        <InquiryForm />
+      </section>
+
+      <section className="shell section">
+        <div className="section-copy section-copy--center">
+          <span className="section-eyebrow">Accreditations and partners</span>
+          <h2>Connected to the wider care community</h2>
+        </div>
+        <LogoGrid />
+      </section>
     </>
   );
 }

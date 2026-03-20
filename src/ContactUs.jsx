@@ -1,76 +1,41 @@
-import Footer from "./Footer";
-import FormComponent from "./FormComponent";
-import FinalFooter from "./FinalFooter.jsx";
-import "./styles/ContactUs.css";
+import InquiryForm from "./components/InquiryForm";
+import { brand } from "./siteData";
 
 export default function ContactUs() {
-  function openEmailWindow() {
-    return window.open("mailto:libracare@outlook.com");
-  }
-
   return (
-    <>
-      <h1
-        className="d-flex justify-content-center"
-        style={{
-          marginTop: "1em",
-          userSelect: "none",
-        }}
-      >
-        Contact Us
-      </h1>
-      <div
-        style={{
-          marginTop: "2em",
-          marginBottom: "2em",
-        }}
-        id="contact-us-wrapper"
-      >
-        <h4
-          style={{
-            marginTop: "1em",
-          }}
-          onClick={openEmailWindow}
-        >
-          Email
-        </h4>
-        <p onClick={openEmailWindow}>libracare@outlook.com</p>
-        <a
-          href="tel:01922234453"
-          style={{ textDecoration: "none", color: "inherit" }}
-        >
-          <h4>Telephone</h4>
-          <p>01922 234 453</p>
-        </a>
-        <a
-          href="tel:07974733121"
-          style={{ textDecoration: "none", color: "inherit" }}
-        >
-          <h4>Mobile</h4>
-          <p>07974 733 121</p>
-        </a>
-        <h4>Address</h4>
-        <p style={{ marginBottom: "0px" }}>Suite 58 Beacon Buildings</p>
-        <p style={{ marginBottom: "0px" }}>Leighswood Road</p>
-        <p style={{ marginBottom: "0px" }}>Aldridge</p>
-        <p>WS9 8AA</p>
+    <div className="shell section">
+      <div className="section-copy section-copy--center">
+        <span className="section-eyebrow">Contact us</span>
+        <h1>Speak with Libra Care</h1>
+        <p>
+          If you would like to discuss care, careers, or a new inquiry, you can
+          contact us directly or use the form below.
+        </p>
       </div>
-      <p
-        className="d-flex justify-content-center"
-        style={{
-          marginTop: "2em",
-        }}
-      >
-        or alternatively...
-      </p>
-      <div
-        className="d-flex justify-content-center"
-        style={{ marginBottom: "2em" }}
-      >
-        <FormComponent />
+
+      <div className="contact-grid">
+        <article className="feature-card">
+          <h3>Email</h3>
+          <a href={`mailto:${brand.email}`}>{brand.email}</a>
+        </article>
+        <article className="feature-card">
+          <h3>Telephone</h3>
+          <a href={`tel:${brand.phoneHref}`}>{brand.phone}</a>
+        </article>
+        <article className="feature-card">
+          <h3>Mobile</h3>
+          <a href={`tel:${brand.mobileHref}`}>{brand.mobile}</a>
+        </article>
+        <article className="feature-card">
+          <h3>Address</h3>
+          <p>{brand.address.join(", ")}</p>
+        </article>
       </div>
-      <Footer />
-      <FinalFooter />
-    </>
+
+      <InquiryForm
+        title="Secure contact form"
+        subtitle="Get in touch with us directly or use the form below."
+      />
+    </div>
   );
 }

@@ -1,21 +1,17 @@
-import FormComponent from "./FormComponent";
-import Footer from "./Footer.jsx";
-import FinalFooter from "./FinalFooter.jsx";
+import InquiryForm from "./components/InquiryForm";
 
 export default function Inquiry() {
   return (
-    <>
-      <div
-        className="d-flex justify-content-center"
-        style={{
-          marginTop: "1.5em",
-          marginBottom: "2em",
-        }}
-      >
-        <FormComponent />;
+    <div className="shell section">
+      <div className="section-copy section-copy--center">
+        <span className="section-eyebrow">Inquiry</span>
+        <h1>Tell us how we can help</h1>
+        <p>
+          Use this form for care requests or career applications. We will review
+          your inquiry and respond as soon as we can.
+        </p>
       </div>
-      <Footer />
-      <FinalFooter />
-    </>
+      <InquiryForm />
+    </div>
   );
 }

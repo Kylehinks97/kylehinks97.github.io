@@ -1,57 +1,19 @@
-import Footer from "./Footer.jsx";
-import "./styles/DataProtection.css";
-import FinalFooter from "./FinalFooter.jsx"
+import { valueStatements } from "./siteData";
 
 export default function Values() {
   return (
-    <>
-      <div
-        style={{
-          marginBottom: "5em",
-        }}
-      >
-        <h1
-          className="d-flex justify-content-center"
-          style={{
-            marginTop: "1em",
-            userSelect: "none"
-          }}
-        >
-          Our Values
-        </h1>
-        <div
-          style={{
-            margin: "auto",
-            marginTop: "2em",
-          }}
-          id="text-container"
-        >
-          <ul>
-            <li>
-              To provide our customers with a high quality support service that
-              focuses on maximising independence and aims to enable the person
-              to be as autonomous as possible.
-            </li>
-            <br></br>
-            <li>
-              To offer a responsive and flexible way of working with
-              individuals.
-            </li>
-            <br></br>
-            <li>
-              To provide a suitably trained work force who are able to deliver a
-              quality service that focuses on empowerment and enablement.
-            </li>
-            <br></br>
-            <li>
-              Where possible to delay the deterioration of well-being associated
-              with ageing, illness and disability.
-            </li>
-          </ul>
-        </div>
+    <div className="shell section">
+      <div className="section-copy section-copy--center">
+        <span className="section-eyebrow">Our values</span>
+        <h1>The principles that shape our care</h1>
       </div>
-      <Footer />
-      <FinalFooter />
-    </>
+      <div className="content-card">
+        <ul className="content-list">
+          {valueStatements.map((value) => (
+            <li key={value}>{value}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 }
