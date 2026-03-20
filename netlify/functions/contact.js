@@ -3,11 +3,10 @@ const JSON_HEADERS = {
 };
 
 function response(statusCode, body) {
-  return {
-    statusCode,
+  return new Response(JSON.stringify(body), {
+    status: statusCode,
     headers: JSON_HEADERS,
-    body: JSON.stringify(body),
-  };
+  });
 }
 
 function isValidEmail(value) {
@@ -18,15 +17,19 @@ function sanitize(value, maxLength = 5000) {
   return String(value || "").replace(/\r/g, "").trim().slice(0, maxLength);
 }
 
-export default async function handler(event) {
-  if (event.httpMethod !== "POST") {
+function getEnv(name) {
+  return globalThis.Netlify?.env?.get(name) || process.env[name];
+}
+
+export default async function handler(request) {
+  if (request.method !== "POST") {
     return response(405, { error: "Method not allowed." });
   }
 
   let parsedBody;
 
   try {
-    parsedBody = JSON.parse(event.body || "{}");
+    parsedBody = await request.json();
   } catch {
     return response(400, { error: "Invalid request body." });
   }
@@ -58,11 +61,11 @@ export default async function handler(event) {
     return response(400, { error: "Please provide a valid email address." });
   }
 
-  const apiKey = process.env.MAILGUN_API_KEY || process.env.API_KEY;
-  const domain = process.env.MAILGUN_DOMAIN || process.env.SANDBOX_DOMAIN;
+  const apiKey = getEnv("MAILGUN_API_KEY") || getEnv("API_KEY");
+  const domain = getEnv("MAILGUN_DOMAIN") || getEnv("SANDBOX_DOMAIN");
   const baseUrl =
-    process.env.MAILGUN_BASE_URL || process.env.BASE_URL || "https://api.mailgun.net";
-  const recipient = process.env.CONTACT_TO_EMAIL || "libracare@outlook.com";
+    getEnv("MAILGUN_BASE_URL") || getEnv("BASE_URL") || "https://api.mailgun.net";
+  const recipient = getEnv("CONTACT_TO_EMAIL") || "libracare@outlook.com";
 
   if (!apiKey || !domain) {
     return response(500, { error: "Mail service is not configured." });
