@@ -14,7 +14,7 @@ export const brand = {
     "WS9 8AA",
   ],
   footerAddress: [
-    "Office 9, Euro House",
+    "Office 3, Euro House",
     "Birch Lane Business Park",
     "Birch Lane",
     "WS9 0NF",
