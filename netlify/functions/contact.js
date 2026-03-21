@@ -61,45 +61,38 @@ export default async function handler(request) {
     return response(400, { error: "Please provide a valid email address." });
   }
 
-  const apiKey = getEnv("MAILGUN_API_KEY") || getEnv("API_KEY");
-  const domain = getEnv("MAILGUN_DOMAIN") || getEnv("SANDBOX_DOMAIN");
-  const baseUrl =
-    getEnv("MAILGUN_BASE_URL") || getEnv("BASE_URL") || "https://api.mailgun.net";
-  const recipient = getEnv("CONTACT_TO_EMAIL") || "libracare@outlook.com";
-
-  if (!apiKey || !domain) {
-    return response(500, { error: "Mail service is not configured." });
-  }
-
-  const formData = new URLSearchParams();
-  formData.set(
-    "from",
-    `Libra Care Website <postmaster@${domain.replace(/^https?:\/\//, "")}>`
-  );
-  formData.set("to", recipient);
-  formData.set(
-    "subject",
-    enquiryType === "care" ? "New care inquiry" : "New career application"
-  );
-  formData.set("text", message);
-  formData.set("h:Reply-To", replyTo);
-
   try {
-    const mailgunResponse = await fetch(`${baseUrl}/v3/${domain}/messages`, {
+    const apiKey = getEnv("RESEND_API_KEY");
+    const recipient = getEnv("CONTACT_TO_EMAIL") || "libracare@outlook.com";
+    const fromEnv = sanitize(getEnv("CONTACT_FROM_EMAIL"), 320);
+    const from = fromEnv
+      ? fromEnv.includes("<")
+        ? fromEnv
+        : `Libra Care Website <${fromEnv}>`
+      : "Libra Care Website <onboarding@resend.dev>";
+
+    if (!apiKey) {
+      return response(500, { error: "Mail service is not configured." });
+    }
+
+    const resendResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
-        Authorization: `Basic ${Buffer.from(`api:${apiKey}`).toString("base64")}`,
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
       },
-      body: formData.toString(),
+      body: JSON.stringify({
+        from,
+        to: recipient,
+        subject: enquiryType === "care" ? "New care inquiry" : "New career application",
+        text: `Name: ${name}\nReply-to: ${replyTo}\n\n${message}`,
+        reply_to: replyTo,
+      }),
     });
 
-    if (!mailgunResponse.ok) {
-      const errorText = await mailgunResponse.text();
-      return response(502, {
-        error: "Unable to deliver your inquiry right now.",
-        details: errorText,
-      });
+    if (!resendResponse.ok) {
+      const errorText = await resendResponse.text().catch(() => "");
+      return response(502, { error: "Unable to deliver your inquiry right now.", details: errorText });
     }
 
     return response(200, { ok: true });
