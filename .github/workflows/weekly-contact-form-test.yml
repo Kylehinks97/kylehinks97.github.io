@@ -1,0 +1,58 @@
+name: Weekly Contact Form Test
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub cron is UTC. This is Monday 10:00 UTC.
+    - cron: "0 10 * * 1"
+
+jobs:
+  test-contact-form:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Send test submission
+        env:
+          CONTACT_TEST_ENDPOINT: ${{ secrets.CONTACT_TEST_ENDPOINT }}
+          CONTACT_TEST_REPLY_TO: ${{ secrets.CONTACT_TEST_REPLY_TO }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${CONTACT_TEST_ENDPOINT:-}" ]; then
+            echo "Missing CONTACT_TEST_ENDPOINT secret (full URL to /.netlify/functions/contact)"
+            exit 1
+          fi
+
+          reply_to="${CONTACT_TEST_REPLY_TO:-test-bot@libracare.org.uk}"
+          started_at="$(($(date +%s%3N) - 20000))"
+          now="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+          payload="$(cat <<EOF
+          {
+            "enquiryType": "care",
+            "name": "Weekly Test Bot",
+            "replyTo": "${reply_to}",
+            "message": "Weekly contact form test at ${now}. If you see this, delivery is working.",
+            "website": "",
+            "startedAt": ${started_at}
+          }
+          EOF
+          )"
+
+          echo "POST ${CONTACT_TEST_ENDPOINT}"
+          http_code="$(
+            curl -sS \
+              -o response.json \
+              -w "%{http_code}" \
+              -X POST "${CONTACT_TEST_ENDPOINT}" \
+              -H "Content-Type: application/json" \
+              -H "Accept: application/json" \
+              --data "${payload}"
+          )"
+
+          echo "HTTP ${http_code}"
+          cat response.json || true
+
+          if [ "${http_code}" != "200" ]; then
+            exit 1
+          fi
