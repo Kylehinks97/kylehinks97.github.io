@@ -8,10 +8,10 @@ export const brand = {
   mobile: "07974 733 121",
   mobileHref: "07974733121",
   address: [
-    "Suite 58 Beacon Buildings",
-    "Leighswood Road",
-    "Aldridge",
-    "WS9 8AA",
+    "Office 3, Euro House",
+    "Birch Lane Business Park",
+    "Birch Lane",
+    "WS9 0NF",
   ],
   footerAddress: [
     "Office 3, Euro House",
